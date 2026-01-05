@@ -3,284 +3,55 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MIDCARE© System Dynamics – Success to the Successful</title>
-  <style>
-    :root {
-      --bg: #ffffff;
-      --card: #f8fafc;
-      --ink: #111111;
-      --muted: #555555;
-      --accent-navy: #1e3a8a;
-      --accent-teal: #0d9488;
-      --accent-blue: #2563eb;
-      --border: #e5e7eb;
-      --radius: 10px;
-    }
-    html, body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      margin: 0; padding: 0;
-    }
-    .container {
-      max-width: 1300px;
-      margin: 16px auto 40px;
-      padding: 0 12px;
-    }
-    .title-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-    .title-logo {
-      height: 46px;
-      width: auto;
-    }
-    h1 {
-      font-size: 20px;
-      margin: 0 0 4px;
-      color: var(--accent-navy);
-    }
-    .subtitle {
-      font-size: 13px;
-      color: var(--muted);
-      max-width: 780px;
-    }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 10px;
-      margin-top: 10px;
-      box-shadow: 0 2px 6px rgba(15,23,42,0.04);
-    }
-    .controls-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-    @media (max-width: 960px) {
-      .controls-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 640px) {
-      .controls-grid { grid-template-columns: 1fr; }
-    }
-    .control {
-      background: #ffffff;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      padding: 6px 9px;
-      font-size: 12px;
-    }
-    .control-label {
-      font-weight: 600;
-      font-size: 12px;
-      margin-bottom: 4px;
-      color: var(--accent-navy);
-    }
-    .control-value {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-    input[type=range] {
-      width: 100%;
-    }
-    .button-bar {
-      margin-top: 10px;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .button-bar button {
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--accent-navy);
-      background: #e0ecff;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .button-bar button#resetBtn {
-      border-color: #94a3b8;
-      background: #f1f5f9;
-    }
-    .button-bar button:hover {
-      filter: brightness(0.97);
-    }
-    .charts-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 10px;
-    }
-    @media (max-width: 960px) {
-      .charts-3 { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 780px) {
-      .charts-3 { grid-template-columns: 1fr; }
-    }
-    .panel-title {
-      font-weight: 600;
-      font-size: 13px;
-      margin-bottom: 4px;
-      color: var(--accent-navy);
-    }
-    canvas {
-      max-height: 150px;
-    }
-    .table-wrapper {
-      margin-top: 14px;
-    }
-    .table-title {
-      font-weight: 600;
-      font-size: 13px;
-      margin-bottom: 4px;
-      color: var(--accent-navy);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 11.5px;
-    }
-    thead {
-      background: #e5f0ff;
-    }
-    th, td {
-      border: 1px solid var(--border);
-      padding: 4px 6px;
-      text-align: center;
-    }
-    th {
-      font-weight: 600;
-      color: var(--accent-navy);
-    }
-    .table-note {
-      margin-top: 6px;
-      font-size: 10.5px;
-      color: var(--muted);
-    }
-    a.source-link {
-      color: #1e3a8a;
-      text-decoration: underline;
-    }
-  </style>
+  <title>MIDCARE – 2014-Initialised Model</title>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
 </head>
 
 <body>
-<div class="container">
 
-  <div class="title-row">
+<h2>PHI vs Medical Card Coverage (Model initialised in 2014)</h2>
 
-    <img
-      class="title-logo"
-      src="https://assets.zyrosite.com/AoP61N2BR4i8Q6jl/logo-hsml-AE07eKDgMLFgWBoQ.png"
-      alt="HSML Logo"
-    />
+<button id="runBtn">Run from 2024</button>
+<button id="resetBtn">Reset</button>
 
-    <div>
-      <h1>MIDCARE© System Dynamic Adapted Success to the Successful Archetype – Private Health Insurance versus Public Health Coverage</h1>
-      <div class="subtitle">
-        Press run button to extend the historical series (2008–2024) with animated model projections from 2025 onward.
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="button-bar">
-      <button id="runBtn">Run from 2025</button>
-      <button id="resetBtn">Reset</button>
-    </div>
-  </div>
-
-  <div class="charts-3">
-    <div class="card">
-      <div class="panel-title">Private vs public coverage (%)</div>
-      <canvas id="coverageChart"></canvas>
-    </div>
-
-    <div class="card">
-      <div class="panel-title">Success ratio (PHI share of total coverage)</div>
-      <canvas id="ratioChart"></canvas>
-    </div>
-
-    <div class="card">
-      <div class="panel-title">Allocation lookup function</div>
-      <canvas id="allocationChart"></canvas>
-    </div>
-  </div>
-
-  <div class="card table-wrapper">
-    <div class="table-title">Historical Coverage – Table A1</div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Year</th>
-          <th>PHI coverage (%)</th>
-          <th>Medical Card coverage (%)</th>
-          <th>Difference Δ (pp)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>2008</td><td>46.2</td><td>37.6</td><td>8.6</td></tr>
-        <tr><td>2009</td><td>46.2</td><td>37.6</td><td>8.6</td></tr>
-        <tr><td>2010</td><td>46.2</td><td>37.6</td><td>8.6</td></tr>
-        <tr><td>2011</td><td>46.2</td><td>37.6</td><td>8.6</td></tr>
-        <tr><td>2012</td><td>46.2</td><td>41.3</td><td>4.9</td></tr>
-        <tr><td>2013</td><td>43.7</td><td>40.6</td><td>3.1</td></tr>
-        <tr><td>2014</td><td>41.7</td><td>38.1</td><td>3.6</td></tr>
-        <tr><td>2015</td><td>42.1</td><td>36.8</td><td>5.3</td></tr>
-        <tr><td>2016</td><td>42.4</td><td>34.9</td><td>7.5</td></tr>
-        <tr><td>2017</td><td>43.5</td><td>31.8</td><td>11.7</td></tr>
-        <tr><td>2018</td><td>45.2</td><td>33.3</td><td>11.9</td></tr>
-        <tr><td>2019</td><td>45.7</td><td>30.7</td><td>15.0</td></tr>
-        <tr><td>2020</td><td>46.1</td><td>30.9</td><td>15.2</td></tr>
-        <tr><td>2021</td><td>46.7</td><td>30.7</td><td>16.0</td></tr>
-        <tr><td>2022</td><td>47.2</td><td>30.3</td><td>16.9</td></tr>
-        <tr><td>2023</td><td>47.0</td><td>30.5</td><td>16.5</td></tr>
-        <tr><td>2024</td><td>46.0</td><td>29.0</td><td>17.0</td></tr>
-      </tbody>
-    </table>
-
-    <div class="table-note">
-      Table A1: Historical coverage series used to calibrate the Vensim model (Ireland, 2008–2024).<br>
-      Difference computed as Δ = PHI − Medical Card (percentage points).<br><br>
-
-      <strong>Sources:</strong><br>
-
-      1] Health Insurance Authority — Market Report 2024<br>
-      <a class="source-link" href="https://www.hia.ie/publication/market-reports/market-report-2024" target="_blank">
-        https://www.hia.ie/publication/market-reports/market-report-2024
-      </a><br><br>
-
-      2] HSE Annual Report 2024<br>
-      <a class="source-link" href="https://www.hse.ie/eng/staff/pcrs/pcrs-publications/hse-annual-report-2024.pdf" target="_blank">
-        https://www.hse.ie/eng/staff/pcrs/pcrs-publications/hse-annual-report-2024.pdf
-      </a>
-    </div>
-  </div>
-
-</div>
+<canvas id="coverageChart"></canvas>
+<canvas id="ratioChart"></canvas>
+<canvas id="allocationChart"></canvas>
 
 <script>
-const INITIAL_TIME = 2008;
-const HIST_END_YEAR = 2024;
+/* ------------------ MODEL SETTINGS ------------------ */
+
+const INITIAL_TIME = 2014;
+const HIST_END_YEAR = 2023;   // calibration window 2014–2023
 const FINAL_TIME = 2050;
 
-const histYears = [2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024];
-const histPriv = [46.2,46.2,46.2,46.2,46.2,43.7,41.7,42.1,42.4,43.5,45.2,45.7,46.1,46.7,47.2,47.0,46.0];
-const histPub  = [37.6,37.6,37.6,37.6,41.3,40.6,38.1,36.8,34.9,31.8,33.3,30.7,30.9,30.7,30.3,30.5,29.0];
+/* 2014–2024 historical observations */
 
+const histYears = [
+  2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024
+];
+
+const histPriv = [
+  41.7,42.1,42.4,43.5,45.2,45.7,46.1,46.7,47.2,47.0,46.0
+];
+
+const histPub = [
+  38.1,37.0,35.5,32.9,32.2,31.2,31.5,30.4,30.2,30.5,29.0
+];
+
+/* maps for lookup */
 const histPrivMap = {};
 const histPubMap = {};
-histYears.forEach((y,i)=>{ histPrivMap[y]=histPriv[i]; histPubMap[y]=histPub[i]; });
+histYears.forEach((y,i)=>{ 
+  histPrivMap[y]=histPriv[i]; 
+  histPubMap[y]=histPub[i]; 
+});
 
 let years=[];
 for(let y=INITIAL_TIME;y<=FINAL_TIME;y++) years.push(y);
+
+/* ------------------ SUCCESS LOOKUP ------------------ */
 
 const lookupPoints=[
  {x:0,y:0},{x:0.1,y:0.05},{x:0.2,y:0.1},{x:0.3,y:0.2},{x:0.4,y:0.3},
@@ -300,76 +71,87 @@ function lookup(v){
  }
 }
 
-let covChart,ratioChart,allocChart;
-let timer=null;
+/* ------------------ CHARTS ------------------ */
+
+let covChart,ratioChart,allocChart,timer=null;
 
 function init(){
 
  const cov=years.map(y=>y<=HIST_END_YEAR?histPrivMap[y]:null);
  const pub=years.map(y=>y<=HIST_END_YEAR?histPubMap[y]:null);
+
  const ratio=years.map(y=>{
-     if(y<=HIST_END_YEAR){
-       const t=histPrivMap[y]+histPubMap[y];
-       return histPrivMap[y]/t;
-     }
-     return null;
+   if(y<=HIST_END_YEAR){
+     const t=histPrivMap[y]+histPubMap[y];
+     return histPrivMap[y]/t;
+   }
+   return null;
  });
 
  covChart=new Chart(document.getElementById("coverageChart"),{
   type:'line',
   data:{labels:years,datasets:[
-    {label:"Private",data:cov,borderColor:"#1e3a8a",pointRadius:0},
-    {label:"Public",data:pub,borderColor:"#0d9488",borderDash:[4,2],pointRadius:0}
+    {label:"Private Coverage %",data:cov,borderColor:"#0b1f63",pointRadius:0},
+    {label:"Medical Card %",data:pub,borderColor:"#0d9488",pointRadius:0}
   ]},
-  options:{animation:false,scales:{x:{grid:{display:false}},y:{min:0,max:100,grid:{display:false}}}}
+  options:{scales:{y:{min:0,max:100}}}
  });
 
  ratioChart=new Chart(document.getElementById("ratioChart"),{
   type:'line',
   data:{labels:years,datasets:[
-   {label:"Success Ratio",data:ratio,borderColor:"#2563eb",pointRadius:0}
+   {label:"Success Ratio (PHI Share)",data:ratio,borderColor:"#2563eb",pointRadius:0}
   ]},
-  options:{animation:false,scales:{x:{grid:{display:false}},y:{min:0,max:1,grid:{display:false}}}}
+  options:{scales:{y:{min:0,max:1}}}
  });
 
  const xs=[],ys=[];
  for(let i=0;i<=100;i++){xs.push(i/100);ys.push(lookup(i/100));}
+
  allocChart=new Chart(document.getElementById("allocationChart"),{
   type:'line',
   data:{labels:xs,datasets:[
-   {label:"Allocation lookup",data:ys,borderColor:"#0f766e",pointRadius:0}
-  ]},
-  options:{animation:false,scales:{x:{grid:{display:false}},y:{grid:{display:false}}}}
+   {label:"Allocation Lookup",data:ys,borderColor:"#0f766e",pointRadius:0}
+  ]}
  });
 
- document.getElementById("runBtn").onclick=runFrom2025;
- document.getElementById("resetBtn").onclick=resetAll;
+ document.getElementById("runBtn").onclick=runFrom2024;
+ document.getElementById("resetBtn").onclick=()=>location.reload();
 }
 
-function runFrom2025(){
+/* ------------------ DYNAMIC SIMULATION ------------------ */
+
+function runFrom2024(){
+
  if(timer)clearInterval(timer);
 
- let priv=histPrivMap[HIST_END_YEAR];
- let pub=histPubMap[HIST_END_YEAR];
+ let priv = histPrivMap[HIST_END_YEAR];
+ let pub  = histPubMap[HIST_END_YEAR];
 
  let cov=covChart.data.datasets[0].data.slice();
  let pubc=covChart.data.datasets[1].data.slice();
  let rat=ratioChart.data.datasets[0].data.slice();
 
- let year=2025;
+ let year=2024;
 
  timer=setInterval(()=>{
+
    if(year>FINAL_TIME){clearInterval(timer);return;}
 
    const tot=priv+pub;
    const r=priv/tot;
    const alloc=lookup(r);
 
-   const gainP=1*alloc;
-   const gainG=1*(1-alloc);
+   /* structural parameters consistent with Vensim */
+   const R=1.0;
+   const lambdaP=0.014;
+   const lambdaM=0.024;
 
-   priv=priv+gainP-priv*0.014;
-   pub=pub+gainG-pub*0.024;
+   const gainP=R*alloc;
+   const gainM=R*(1-alloc);
+
+   priv = priv + gainP - lambdaP*priv;
+   pub  = pub  + gainM - lambdaM*pub;
 
    const idx=years.indexOf(year);
    cov[idx]=priv;
@@ -384,12 +166,8 @@ function runFrom2025(){
    ratioChart.update();
 
    year++;
- },200);
-}
 
-function resetAll(){
- if(timer)clearInterval(timer);
- location.reload();
+ },200);
 }
 
 window.onload=init;
@@ -397,3 +175,4 @@ window.onload=init;
 
 </body>
 </html>
+
