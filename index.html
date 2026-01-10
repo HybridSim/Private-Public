@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+# Retry writing the corrected HTML dashboard file
+
+html = """<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -39,9 +41,7 @@
       align-items: center;
     }
 
-    .title-logo {
-      height: 46px;
-    }
+    .title-logo { height: 46px; }
 
     h1 {
       font-size: 20px;
@@ -88,9 +88,7 @@
       margin-top: 10px;
     }
 
-    .chart-box {
-      height: 180px;
-    }
+    .chart-box { height: 180px; }
 
     canvas {
       width: 100% !important;
@@ -109,9 +107,7 @@
       text-align: center;
     }
 
-    thead {
-      background: #e5f0ff;
-    }
+    thead { background: #e5f0ff; }
 
     .table-note {
       font-size: 10.5px;
@@ -168,10 +164,13 @@
     </table>
 
     <div class="table-note">
-      Sources:<br>
-      Health Insurance Authority (2024). Health Insurance in Ireland: Market Report 2024.
-      <br>
-      Department of Health (2024). Health in Ireland: Key Trends 2024.
+      <strong>Sources:</strong><br>
+      Health Insurance Authority (2024).
+      <em>Health Insurance in Ireland: Market Report 2024.</em>
+      <a href="https://www.hia.ie/sites/default/files/2025-04/hia-market-report-2024.pdf" target="_blank">Link</a><br>
+      Department of Health (2024).
+      <em>Health in Ireland: Key Trends 2024.</em>
+      <a href="https://assets.gov.ie/static/documents/chapter-4-primary-care-and-community-service.html" target="_blank">Link</a>
     </div>
   </div>
 
@@ -207,29 +206,25 @@ function initCharts() {
   const covPub  = years.map(y => histPub[y]  ?? null);
   const ratio   = years.map(y => histPriv[y] ? histPriv[y]/(histPriv[y]+histPub[y]) : null);
 
-  covChart = new Chart(coverageChart, {
+  covChart = new Chart(document.getElementById('coverageChart'), {
     type: 'line',
-    data: {
-      labels: years,
-      datasets: [
-        {label:'PHI', data: covPriv, borderColor:'#1e3a8a', pointRadius:0},
-        {label:'MC',  data: covPub,  borderColor:'#0d9488', borderDash:[4,2], pointRadius:0}
-      ]
-    },
+    data: { labels: years, datasets: [
+      {label:'PHI', data: covPriv, borderColor:'#1e3a8a', pointRadius:0},
+      {label:'MC',  data: covPub,  borderColor:'#0d9488', borderDash:[4,2], pointRadius:0}
+    ]},
     options: {...baseOpts, scales:{y:{min:0,max:100}}}
   });
 
-  ratioChart = new Chart(ratioChartEl = ratioChart, {
+  ratioChart = new Chart(document.getElementById('ratioChart'), {
     type: 'line',
-    data: {
-      labels: years,
-      datasets: [{label:'Success ratio', data: ratio, borderColor:'#2563eb', pointRadius:0}]
-    },
+    data: { labels: years, datasets: [
+      {label:'Success ratio', data: ratio, borderColor:'#2563eb', pointRadius:0}
+    ]},
     options: {...baseOpts, scales:{y:{min:0,max:1}}}
   });
 
   const xs = [...Array(101)].map((_,i)=>i/100);
-  new Chart(allocationChart, {
+  new Chart(document.getElementById('allocationChart'), {
     type:'line',
     data:{labels:xs,datasets:[{label:'Allocation',data:xs,borderColor:'#0f766e',pointRadius:0}]},
     options:{...baseOpts, scales:{y:{min:0,max:1}}}
@@ -246,9 +241,9 @@ function runModel() {
   timer = setInterval(() => {
     if (year > FINAL_YEAR) { clearInterval(timer); return; }
 
-    const ratio = priv / (priv + pub);
-    const inflowPriv = RESOURCES * ratio;
-    const inflowPub  = RESOURCES * (1 - ratio);
+    const r = priv / (priv + pub);
+    const inflowPriv = RESOURCES * r;
+    const inflowPub  = RESOURCES * (1 - r);
 
     priv += inflowPriv - priv * NORMAL_LOSS_PRIVATE;
     pub  += inflowPub  - pub  * NORMAL_LOSS_PUBLIC;
@@ -279,7 +274,13 @@ window.onload = () => {
 </script>
 </body>
 </html>
+"""
 
+path = "/mnt/data/MIDCARE_dashboard_final_fixed.html"
+with open(path, "w", encoding="utf-8") as f:
+    f.write(html)
+
+path
 
 
 
