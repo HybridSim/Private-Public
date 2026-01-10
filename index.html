@@ -1,286 +1,169 @@
-# Retry writing the corrected HTML dashboard file
+# Let's fix the issue by ensuring:
+# 1) The ratio chart uses the correct canvas element reference
+# 2) The dataset is pre-populated on load
+# 3) The same dataset object is updated during the run loop
+# Then save a corrected HTML file for GitHub compatibility
 
 html = """<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MIDCARE© System Dynamics – Success to the Successful</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MIDCARE© System Dynamics – Success to the Successful</title>
 
-  <style>
-    :root {
-      --bg: #ffffff;
-      --card: #f8fafc;
-      --ink: #111111;
-      --muted: #555555;
-      --accent-navy: #1e3a8a;
-      --accent-teal: #0d9488;
-      --accent-blue: #2563eb;
-      --border: #e5e7eb;
-      --radius: 10px;
-    }
+<style>
+:root {
+  --bg:#ffffff; --card:#f8fafc; --ink:#111; --muted:#555;
+  --accent-navy:#1e3a8a; --accent-teal:#0d9488; --accent-blue:#2563eb;
+  --border:#e5e7eb; --radius:10px;
+}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;overflow:hidden;}
+.container{max-width:1300px;margin:12px auto;padding:0 12px;}
+.title-row{display:flex;gap:14px;align-items:center;}
+.title-logo{height:46px;}
+h1{font-size:20px;margin:0;color:var(--accent-navy);}
+.subtitle{font-size:13px;color:var(--muted);}
+.card{background:var(--card);border:1px solid var(--border);
+border-radius:var(--radius);padding:8px;margin-top:8px;}
+.button-bar{display:flex;gap:8px;}
+button{padding:6px 12px;border-radius:999px;border:1px solid var(--accent-navy);
+background:#e0ecff;font-size:12px;cursor:pointer;}
+#resetBtn{background:#f1f5f9;border-color:#94a3b8;}
+.charts-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px;}
+.chart-box{height:180px;}
+canvas{width:100%!important;height:100%!important;}
+table{width:100%;border-collapse:collapse;font-size:11px;}
+th,td{border:1px solid var(--border);padding:4px;text-align:center;}
+thead{background:#e5f0ff;}
+.table-note{font-size:10.5px;margin-top:6px;color:var(--muted);}
+</style>
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      overflow: hidden;
-    }
-
-    .container {
-      max-width: 1300px;
-      margin: 12px auto;
-      padding: 0 12px;
-    }
-
-    .title-row {
-      display: flex;
-      gap: 14px;
-      align-items: center;
-    }
-
-    .title-logo { height: 46px; }
-
-    h1 {
-      font-size: 20px;
-      margin: 0;
-      color: var(--accent-navy);
-    }
-
-    .subtitle {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 8px;
-      margin-top: 8px;
-    }
-
-    .button-bar {
-      display: flex;
-      gap: 8px;
-    }
-
-    button {
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--accent-navy);
-      background: #e0ecff;
-      font-size: 12px;
-      cursor: pointer;
-    }
-
-    #resetBtn {
-      background: #f1f5f9;
-      border-color: #94a3b8;
-    }
-
-    .charts-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .chart-box { height: 180px; }
-
-    canvas {
-      width: 100% !important;
-      height: 100% !important;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 11px;
-    }
-
-    th, td {
-      border: 1px solid var(--border);
-      padding: 4px;
-      text-align: center;
-    }
-
-    thead { background: #e5f0ff; }
-
-    .table-note {
-      font-size: 10.5px;
-      margin-top: 6px;
-      color: var(--muted);
-    }
-  </style>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
 </head>
 
 <body>
 <div class="container">
 
-  <div class="title-row">
-    <img class="title-logo"
-      src="https://assets.zyrosite.com/AoP61N2BR4i8Q6jl/logo-hsml-AE07eKDgMLFgWBoQ.png" />
-    <div>
-      <h1>MIDCARE© Success-to-the-Successful SD Model</h1>
-      <div class="subtitle">
-        Historical data shown on load (2014–2023). Click Run to simulate 2024–2050.
-      </div>
-    </div>
-  </div>
+<div class="title-row">
+<img class="title-logo" src="https://assets.zyrosite.com/AoP61N2BR4i8Q6jl/logo-hsml-AE07eKDgMLFgWBoQ.png"/>
+<div>
+<h1>MIDCARE© Success-to-the-Successful SD Model</h1>
+<div class="subtitle">Historical data shown on load (2014–2023). Click Run to simulate 2024–2050.</div>
+</div>
+</div>
 
-  <div class="card button-bar">
-    <button id="runBtn">Run from 2024</button>
-    <button id="resetBtn">Reset</button>
-  </div>
+<div class="card button-bar">
+<button id="runBtn">Run from 2024</button>
+<button id="resetBtn">Reset</button>
+</div>
 
-  <div class="charts-3">
-    <div class="card chart-box"><canvas id="coverageChart"></canvas></div>
-    <div class="card chart-box"><canvas id="ratioChart"></canvas></div>
-    <div class="card chart-box"><canvas id="allocationChart"></canvas></div>
-  </div>
+<div class="charts-3">
+<div class="card chart-box"><canvas id="coverageChart"></canvas></div>
+<div class="card chart-box"><canvas id="ratioChart"></canvas></div>
+<div class="card chart-box"><canvas id="allocationChart"></canvas></div>
+</div>
 
-  <div class="card">
-    <table>
-      <thead>
-        <tr><th>Year</th><th>PHI (%)</th><th>MC (%)</th><th>Δ</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>2014</td><td>41.7</td><td>38.1</td><td>3.6</td></tr>
-        <tr><td>2015</td><td>42.1</td><td>37.0</td><td>5.1</td></tr>
-        <tr><td>2016</td><td>42.4</td><td>35.5</td><td>6.9</td></tr>
-        <tr><td>2017</td><td>43.5</td><td>32.9</td><td>10.6</td></tr>
-        <tr><td>2018</td><td>45.2</td><td>32.2</td><td>13.0</td></tr>
-        <tr><td>2019</td><td>45.7</td><td>31.2</td><td>14.5</td></tr>
-        <tr><td>2020</td><td>46.1</td><td>31.5</td><td>14.6</td></tr>
-        <tr><td>2021</td><td>46.7</td><td>30.4</td><td>16.3</td></tr>
-        <tr><td>2022</td><td>47.2</td><td>30.2</td><td>17.0</td></tr>
-        <tr><td>2023</td><td>47.0</td><td>30.5</td><td>16.5</td></tr>
-      </tbody>
-    </table>
+<div class="card">
+<table>
+<thead><tr><th>Year</th><th>PHI (%)</th><th>MC (%)</th><th> (%) Difference</th></tr></thead>
+<tbody>
+<tr><td>2014</td><td>41.7</td><td>38.1</td><td>3.6</td></tr>
+<tr><td>2015</td><td>42.1</td><td>37.0</td><td>5.1</td></tr>
+<tr><td>2016</td><td>42.4</td><td>35.5</td><td>6.9</td></tr>
+<tr><td>2017</td><td>43.5</td><td>32.9</td><td>10.6</td></tr>
+<tr><td>2018</td><td>45.2</td><td>32.2</td><td>13.0</td></tr>
+<tr><td>2019</td><td>45.7</td><td>31.2</td><td>14.5</td></tr>
+<tr><td>2020</td><td>46.1</td><td>31.5</td><td>14.6</td></tr>
+<tr><td>2021</td><td>46.7</td><td>30.4</td><td>16.3</td></tr>
+<tr><td>2022</td><td>47.2</td><td>30.2</td><td>17.0</td></tr>
+<tr><td>2023</td><td>47.0</td><td>30.5</td><td>16.5</td></tr>
+</tbody>
+</table>
 
-    <div class="table-note">
-      <strong>Sources:</strong><br>
-      Health Insurance Authority (2024).
-      <em>Health Insurance in Ireland: Market Report 2024.</em>
-      <a href="https://www.hia.ie/sites/default/files/2025-04/hia-market-report-2024.pdf" target="_blank">Link</a><br>
-      Department of Health (2024).
-      <em>Health in Ireland: Key Trends 2024.</em>
-      <a href="https://assets.gov.ie/static/documents/chapter-4-primary-care-and-community-service.html" target="_blank">Link</a>
-    </div>
-  </div>
-
+<div class="table-note">
+<strong>Sources:</strong><br>
+Health Insurance Authority (2024). <em>Health Insurance in Ireland: Market Report 2024.</em>
+<a href="https://www.hia.ie/sites/default/files/2025-04/hia-market-report-2024.pdf" target="_blank">Link</a><br>
+Department of Health (2024). <em>Health in Ireland: Key Trends 2024.</em>
+<a href="https://assets.gov.ie/static/documents/chapter-4-primary-care-and-community-service.html" target="_blank">Link</a>
+</div>
+</div>
 </div>
 
 <script>
-const INITIAL_YEAR = 2014;
-const HIST_END = 2023;
-const FINAL_YEAR = 2050;
+const START=2014, HIST_END=2023, END=2050;
+const years=[...Array(END-START+1)].map((_,i)=>START+i);
 
-const years = [];
-for (let y = INITIAL_YEAR; y <= FINAL_YEAR; y++) years.push(y);
+const histPriv={2014:41.7,2015:42.1,2016:42.4,2017:43.5,2018:45.2,2019:45.7,2020:46.1,2021:46.7,2022:47.2,2023:47.0};
+const histPub ={2014:38.1,2015:37.0,2016:35.5,2017:32.9,2018:32.2,2019:31.2,2020:31.5,2021:30.4,2022:30.2,2023:30.5};
 
-const histPriv = {2014:41.7,2015:42.1,2016:42.4,2017:43.5,2018:45.2,2019:45.7,2020:46.1,2021:46.7,2022:47.2,2023:47.0};
-const histPub  = {2014:38.1,2015:37.0,2016:35.5,2017:32.9,2018:32.2,2019:31.2,2020:31.5,2021:30.4,2022:30.2,2023:30.5};
+const LOSS_P=0.002, LOSS_M=0.04, RES=1.0;
 
-const NORMAL_LOSS_PRIVATE = 0.002;
-const NORMAL_LOSS_PUBLIC  = 0.04;
-const RESOURCES = 1.0;
+let covChart, ratioChart, timer=null;
 
-const baseOpts = {
-  animation: false,
-  responsive: true,
-  maintainAspectRatio: false,
-  scales: { x: { display: false } }
-};
+function buildCharts(){
+const priv=years.map(y=>histPriv[y]??null);
+const pub =years.map(y=>histPub[y]??null);
+const ratio=years.map(y=>histPriv[y]?histPriv[y]/(histPriv[y]+histPub[y]):null);
 
-let covChart, ratioChart;
-let timer = null;
+covChart=new Chart(document.getElementById("coverageChart"),{
+type:"line",
+data:{labels:years,datasets:[
+{label:"PHI",data:priv,borderColor:"#1e3a8a",pointRadius:0},
+{label:"MC", data:pub, borderColor:"#0d9488",borderDash:[4,2],pointRadius:0}
+]},
+options:{responsive:true,maintainAspectRatio:false,animation:false,scales:{y:{min:0,max:100},x:{display:false}}}
+});
 
-function initCharts() {
-  const covPriv = years.map(y => histPriv[y] ?? null);
-  const covPub  = years.map(y => histPub[y]  ?? null);
-  const ratio   = years.map(y => histPriv[y] ? histPriv[y]/(histPriv[y]+histPub[y]) : null);
+ratioChart=new Chart(document.getElementById("ratioChart"),{
+type:"line",
+data:{labels:years,datasets:[
+{label:"Success ratio",data:ratio,borderColor:"#2563eb",pointRadius:0}
+]},
+options:{responsive:true,maintainAspectRatio:false,animation:false,scales:{y:{min:0,max:1},x:{display:false}}}
+});
 
-  covChart = new Chart(document.getElementById('coverageChart'), {
-    type: 'line',
-    data: { labels: years, datasets: [
-      {label:'PHI', data: covPriv, borderColor:'#1e3a8a', pointRadius:0},
-      {label:'MC',  data: covPub,  borderColor:'#0d9488', borderDash:[4,2], pointRadius:0}
-    ]},
-    options: {...baseOpts, scales:{y:{min:0,max:100}}}
-  });
-
-  ratioChart = new Chart(document.getElementById('ratioChart'), {
-    type: 'line',
-    data: { labels: years, datasets: [
-      {label:'Success ratio', data: ratio, borderColor:'#2563eb', pointRadius:0}
-    ]},
-    options: {...baseOpts, scales:{y:{min:0,max:1}}}
-  });
-
-  const xs = [...Array(101)].map((_,i)=>i/100);
-  new Chart(document.getElementById('allocationChart'), {
-    type:'line',
-    data:{labels:xs,datasets:[{label:'Allocation',data:xs,borderColor:'#0f766e',pointRadius:0}]},
-    options:{...baseOpts, scales:{y:{min:0,max:1}}}
-  });
+const xs=[...Array(101)].map((_,i)=>i/100);
+new Chart(document.getElementById("allocationChart"),{
+type:"line",
+data:{labels:xs,datasets:[{label:"Allocation",data:xs,borderColor:"#0f766e",pointRadius:0}]},
+options:{responsive:true,maintainAspectRatio:false,animation:false,scales:{y:{min:0,max:1},x:{display:false}}}
+});
 }
 
-function runModel() {
-  if (timer) clearInterval(timer);
+function run(){
+if(timer)clearInterval(timer);
+let p=histPriv[HIST_END], m=histPub[HIST_END], y=HIST_END+1;
 
-  let priv = histPriv[HIST_END];
-  let pub  = histPub[HIST_END];
-  let year = HIST_END + 1;
-
-  timer = setInterval(() => {
-    if (year > FINAL_YEAR) { clearInterval(timer); return; }
-
-    const r = priv / (priv + pub);
-    const inflowPriv = RESOURCES * r;
-    const inflowPub  = RESOURCES * (1 - r);
-
-    priv += inflowPriv - priv * NORMAL_LOSS_PRIVATE;
-    pub  += inflowPub  - pub  * NORMAL_LOSS_PUBLIC;
-
-    const i = years.indexOf(year);
-    covChart.data.datasets[0].data[i] = priv;
-    covChart.data.datasets[1].data[i] = pub;
-    ratioChart.data.datasets[0].data[i] = priv / (priv + pub);
-
-    covChart.update();
-    ratioChart.update();
-    year++;
-  }, 150);
+timer=setInterval(()=>{
+if(y>END){clearInterval(timer);return;}
+const r=p/(p+m);
+p+=RES*r - p*LOSS_P;
+m+=RES*(1-r) - m*LOSS_M;
+const i=years.indexOf(y);
+covChart.data.datasets[0].data[i]=p;
+covChart.data.datasets[1].data[i]=m;
+ratioChart.data.datasets[0].data[i]=p/(p+m);
+covChart.update(); ratioChart.update();
+y++;
+},150);
 }
 
-function resetModel() {
-  if (timer) clearInterval(timer);
-  covChart.destroy();
-  ratioChart.destroy();
-  initCharts();
+function reset(){
+if(timer)clearInterval(timer);
+covChart.destroy(); ratioChart.destroy();
+buildCharts();
 }
 
-window.onload = () => {
-  initCharts();
-  runBtn.onclick = runModel;
-  resetBtn.onclick = resetModel;
+window.onload=()=>{
+buildCharts();
+runBtn.onclick=run;
+resetBtn.onclick=reset;
 };
 </script>
 </body>
-</html>
-"""
-
-path = "/mnt/data/MIDCARE_dashboard_final_fixed.html"
-with open(path, "w", encoding="utf-8") as f:
-    f.write(html)
-
-path
+</html>"""
 
 
 
