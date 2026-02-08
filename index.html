@@ -14,11 +14,9 @@
 html,body{
   margin:0;padding:0;background:var(--bg);color:var(--ink);
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-  overflow-y:auto; /* ✅ FIX */
+  overflow-y:auto;
 }
 .container{max-width:1300px;margin:12px auto;padding:0 12px;}
-.title-row{display:flex;gap:14px;align-items:center;}
-.title-logo{height:46px;}
 h1{font-size:20px;margin:0;color:var(--accent-navy);}
 .subtitle{font-size:13px;color:var(--muted);}
 .card{
@@ -48,14 +46,33 @@ details{
   border:1px dashed var(--border);
   border-radius:8px;
   padding:6px 8px;
+  background:#fff;
 }
 summary{
   cursor:pointer;
   font-weight:600;
   color:var(--accent-navy);
 }
-.sources{font-size:11px;color:var(--muted);margin-top:8px;}
-.sources a{color:#2563eb;}
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:11px;
+  margin-top:6px;
+}
+th,td{
+  border:1px solid var(--border);
+  padding:4px;
+  text-align:center;
+}
+thead{background:#e5f0ff;}
+.sources{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+}
+.sources a{color:#2563eb;text-decoration:underline;}
+ul{margin:6px 0 0 16px;padding:0;}
+li{margin-bottom:4px;}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
@@ -78,17 +95,27 @@ summary{
 <div class="card chart-box"><canvas id="allocationChart"></canvas></div>
 </div>
 
+<!-- DATA TABLE DROPDOWN -->
 <details>
-<summary>Data & Assumptions</summary>
-<ul>
-<li>Historical coverage from official Irish health statistics (2014–2023).</li>
-<li>Model structure follows a success-to-the-successful reinforcing loop.</li>
-<li>PHI and MC represent population coverage, not expenditure.</li>
-<li>Loss rates represent structural attrition, not policy intervention.</li>
-<li>No demographic growth, shocks, or reforms are modeled.</li>
-<li>Illustrative dynamics only — not a forecast.</li>
-</ul>
-</details>
+<summary>Data Table &amp; Sources</summary>
+
+<table>
+<thead>
+<tr><th>Year</th><th>PHI (%)</th><th>MC (%)</th><th>Difference (%)</th></tr>
+</thead>
+<tbody>
+<tr><td>2014</td><td>41.7</td><td>38.1</td><td>3.6</td></tr>
+<tr><td>2015</td><td>42.1</td><td>37.0</td><td>5.1</td></tr>
+<tr><td>2016</td><td>42.4</td><td>35.5</td><td>6.9</td></tr>
+<tr><td>2017</td><td>43.5</td><td>32.9</td><td>10.6</td></tr>
+<tr><td>2018</td><td>45.2</td><td>32.2</td><td>13.0</td></tr>
+<tr><td>2019</td><td>45.7</td><td>31.2</td><td>14.5</td></tr>
+<tr><td>2020</td><td>46.1</td><td>31.5</td><td>14.6</td></tr>
+<tr><td>2021</td><td>46.7</td><td>30.4</td><td>16.3</td></tr>
+<tr><td>2022</td><td>47.2</td><td>30.2</td><td>17.0</td></tr>
+<tr><td>2023</td><td>47.0</td><td>30.5</td><td>16.5</td></tr>
+</tbody>
+</table>
 
 <div class="sources">
 <strong>Sources:</strong><br>
@@ -97,6 +124,20 @@ Health Insurance Authority (2024). <em>Health Insurance in Ireland: Market Repor
 Department of Health (2024). <em>Health in Ireland: Key Trends 2024.</em>
 <a href="https://assets.gov.ie/static/documents/chapter-4-primary-care-and-community-service.html" target="_blank">Link</a>
 </div>
+</details>
+
+<!-- ASSUMPTIONS DROPDOWN -->
+<details>
+<summary>Model Assumptions</summary>
+<ul>
+<li>Historical data reflect population coverage, not service utilization or spending.</li>
+<li>Model structure follows a success-to-the-successful reinforcing feedback loop.</li>
+<li>Post-2023 values are simulated, not observed.</li>
+<li>Loss rates represent structural attrition, not policy interventions.</li>
+<li>No demographic change, capacity limits, or reforms are included.</li>
+<li>Results illustrate dynamics, not forecasts or policy recommendations.</li>
+</ul>
+</details>
 
 </div>
 
@@ -115,7 +156,7 @@ function buildCharts(){
   const pub =years.map(y=>histPub[y]??null);
   const ratio=years.map(y=>histPriv[y]?histPriv[y]/(histPriv[y]+histPub[y]):null);
 
-  covChart=new Chart(document.getElementById("coverageChart"),{
+  covChart=new Chart(coverageChart,{
     type:"line",
     data:{labels:years,datasets:[
       {label:"PHI",data:priv,borderColor:"#1e3a8a",pointRadius:0},
@@ -125,7 +166,7 @@ function buildCharts(){
                      y:{title:{display:true,text:"Coverage (%)"},min:0,max:100}}}
   });
 
-  ratioChart=new Chart(document.getElementById("ratioChart"),{
+  ratioChart=new Chart(ratioChart,{
     type:"line",
     data:{labels:years,datasets:[
       {label:"Success Ratio",data:ratio,borderColor:"#2563eb",pointRadius:0}
@@ -135,7 +176,7 @@ function buildCharts(){
   });
 
   const xs=[...Array(101)].map((_,i)=>i/100);
-  allocChart=new Chart(document.getElementById("allocationChart"),{
+  allocChart=new Chart(allocationChart,{
     type:"line",
     data:{labels:xs,datasets:[
       {label:"Allocation",data:xs,borderColor:"#0f766e",pointRadius:0}
@@ -176,5 +217,6 @@ window.onload=()=>{
 </script>
 </body>
 </html>
+
 
 
