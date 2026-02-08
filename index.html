@@ -17,35 +17,35 @@ html,body{
   overflow-y:auto;
 }
 .container{max-width:1300px;margin:12px auto;padding:0 12px;}
-h1{font-size:20px;margin:0;color:var(--accent-navy);}
+h1{font-size:22px;margin:0;color:var(--accent-navy);}
 .subtitle{font-size:13px;color:var(--muted);}
 .card{
   background:var(--card);
   border:1px solid var(--border);
   border-radius:var(--radius);
-  padding:8px;
-  margin-top:8px;
+  padding:10px;
+  margin-top:10px;
 }
-.button-bar{display:flex;gap:8px;}
+.button-bar{display:flex;gap:10px;}
 button{
-  padding:6px 12px;border-radius:999px;
+  padding:6px 14px;border-radius:999px;
   border:1px solid var(--accent-navy);
-  background:#e0ecff;font-size:12px;cursor:pointer;
+  background:#e0ecff;font-size:13px;cursor:pointer;
 }
 #resetBtn{background:#f1f5f9;border-color:#94a3b8;}
 .charts-3{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin-top:10px;
+  gap:12px;
+  margin-top:12px;
 }
-.chart-box{height:200px;}
+.chart-box{height:220px;}
 canvas{width:100%!important;height:100%!important;}
 details{
-  margin-top:10px;
+  margin-top:12px;
   border:1px dashed var(--border);
   border-radius:8px;
-  padding:6px 8px;
+  padding:8px;
   background:#fff;
 }
 summary{
@@ -57,11 +57,11 @@ table{
   width:100%;
   border-collapse:collapse;
   font-size:11px;
-  margin-top:6px;
+  margin-top:8px;
 }
 th,td{
   border:1px solid var(--border);
-  padding:4px;
+  padding:5px;
   text-align:center;
 }
 thead{background:#e5f0ff;}
@@ -95,10 +95,8 @@ li{margin-bottom:4px;}
 <div class="card chart-box"><canvas id="allocationChart"></canvas></div>
 </div>
 
-<!-- DATA TABLE DROPDOWN -->
 <details>
 <summary>Data Table &amp; Sources</summary>
-
 <table>
 <thead>
 <tr><th>Year</th><th>PHI (%)</th><th>MC (%)</th><th>Difference (%)</th></tr>
@@ -126,16 +124,14 @@ Department of Health (2024). <em>Health in Ireland: Key Trends 2024.</em>
 </div>
 </details>
 
-<!-- ASSUMPTIONS DROPDOWN -->
 <details>
 <summary>Model Assumptions</summary>
 <ul>
-<li>Historical data reflect population coverage, not service utilization or spending.</li>
-<li>Model structure follows a success-to-the-successful reinforcing feedback loop.</li>
-<li>Post-2023 values are simulated, not observed.</li>
-<li>Loss rates represent structural attrition, not policy interventions.</li>
-<li>No demographic change, capacity limits, or reforms are included.</li>
-<li>Results illustrate dynamics, not forecasts or policy recommendations.</li>
+<li>Coverage shares represent population coverage, not expenditure.</li>
+<li>Post-2023 values are simulated.</li>
+<li>Success-to-the-successful reinforcing dynamics.</li>
+<li>No demographic change or policy shocks.</li>
+<li>Illustrative model only.</li>
 </ul>
 </details>
 
@@ -149,14 +145,14 @@ const histPriv={2014:41.7,2015:42.1,2016:42.4,2017:43.5,2018:45.2,2019:45.7,2020
 const histPub ={2014:38.1,2015:37.0,2016:35.5,2017:32.9,2018:32.2,2019:31.2,2020:31.5,2021:30.4,2022:30.2,2023:30.5};
 
 const LOSS_P=0.002, LOSS_M=0.04, RES=1.0;
-let covChart, ratioChart, allocChart, timer=null;
+let covChart, ratioChartObj, allocChart, timer=null;
 
 function buildCharts(){
   const priv=years.map(y=>histPriv[y]??null);
   const pub =years.map(y=>histPub[y]??null);
   const ratio=years.map(y=>histPriv[y]?histPriv[y]/(histPriv[y]+histPub[y]):null);
 
-  covChart=new Chart(coverageChart,{
+  covChart=new Chart(document.getElementById("coverageChart"),{
     type:"line",
     data:{labels:years,datasets:[
       {label:"PHI",data:priv,borderColor:"#1e3a8a",pointRadius:0},
@@ -166,7 +162,7 @@ function buildCharts(){
                      y:{title:{display:true,text:"Coverage (%)"},min:0,max:100}}}
   });
 
-  ratioChart=new Chart(ratioChart,{
+  ratioChartObj=new Chart(document.getElementById("ratioChart"),{
     type:"line",
     data:{labels:years,datasets:[
       {label:"Success Ratio",data:ratio,borderColor:"#2563eb",pointRadius:0}
@@ -176,7 +172,7 @@ function buildCharts(){
   });
 
   const xs=[...Array(101)].map((_,i)=>i/100);
-  allocChart=new Chart(allocationChart,{
+  allocChart=new Chart(document.getElementById("allocationChart"),{
     type:"line",
     data:{labels:xs,datasets:[
       {label:"Allocation",data:xs,borderColor:"#0f766e",pointRadius:0}
@@ -197,15 +193,15 @@ function run(){
     const i=years.indexOf(y);
     covChart.data.datasets[0].data[i]=p;
     covChart.data.datasets[1].data[i]=m;
-    ratioChart.data.datasets[0].data[i]=p/(p+m);
-    covChart.update();ratioChart.update();
+    ratioChartObj.data.datasets[0].data[i]=p/(p+m);
+    covChart.update();ratioChartObj.update();
     y++;
   },150);
 }
 
 function reset(){
   if(timer)clearInterval(timer);
-  covChart.destroy();ratioChart.destroy();allocChart.destroy();
+  covChart.destroy();ratioChartObj.destroy();allocChart.destroy();
   buildCharts();
 }
 
